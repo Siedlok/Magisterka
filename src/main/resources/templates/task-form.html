@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <title th:text="${task.id} == null ? 'Add Task' : 'Edit Task'">Task</title>
   <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-
 
 <h2 th:text="${task.id} == null ? 'Add Task' : 'Edit Task'"></h2>
 
@@ -18,37 +17,67 @@
   <a href="/tasks" class="btn btn-secondary">Return to list</a>
 </div>
 
-  <div class="form-container">
-    <form th:action="${task.id} == null
-        ? @{/tasks}
-        : @{/tasks/edit/{id}(id=${task.id})}"
-          method="post"
-          th:object="${task}">
+<div class="form-container">
 
-      <input type="hidden" th:field="*{id}">
-      <input type="hidden" th:field="*{projectId}">
-      <input type="hidden" th:field="*{userId}">
+  <form th:if="${task.id == null}"
+        th:action="@{/tasks}"
+        method="post"
+        th:object="${task}">
 
-      <label>Title:</label>
-      <input type="text" th:field="*{title}" required>
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{projectId}">
+    <input type="hidden" th:field="*{userId}">
 
-      <label>Description:</label>
-      <textarea th:field="*{description}"></textarea>
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" required>
 
-      <label>Status:</label>
-      <select th:field="*{status}">
-        <option value="TODO">TODO</option>
-        <option value="IN_PROGRESS">IN_PROGRESS</option>
-        <option value="DONE">DONE</option>
-      </select>
+    <label>Description:</label>
+    <textarea th:field="*{description}"></textarea>
 
-      <label>Deadline:</label>
-      <input type="datetime-local" th:field="*{deadline}">
+    <label>Status:</label>
+    <select th:field="*{status}">
+      <option value="TODO">TODO</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="DONE">DONE</option>
+    </select>
 
-      <button type="submit">Save</button>
-    </form>
-  </div>
+    <label>Deadline:</label>
+    <input type="datetime-local" th:field="*{deadline}">
 
+    <button type="submit">Save</button>
+  </form>
+
+
+  <form th:unless="${task.id == null}"
+        th:action="@{/tasks/edit/{id}(id=${task.id})}"
+        method="post"
+        th:object="${task}">
+
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{projectId}">
+    <input type="hidden" th:field="*{userId}">
+
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" required>
+
+    <label>Description:</label>
+    <textarea th:field="*{description}"></textarea>
+
+    <label>Status:</label>
+    <select th:field="*{status}">
+      <option value="TODO">TODO</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="DONE">DONE</option>
+    </select>
+
+    <label>Deadline:</label>
+    <input type="datetime-local" th:field="*{deadline}">
+
+    <button type="submit">Save</button>
+  </form>
+
+</div>
 
 </body>
 </html>
+
