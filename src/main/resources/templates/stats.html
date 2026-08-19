@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Project's statistics</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/styles.css}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+
+<div class="user-info" th:if="${username != null}">
+  Logged as: <strong th:text="${username}">user</strong>
+</div>
+
+
+<div class="stats-container">
+
+  <div class="stats-header">
+    <div>
+      <h1>Project statistics</h1>
+      <p th:text="${project.name}">Project Name</p>
+    </div>
+
+    <a th:href="@{/projects/{id}(id=${projectId})}" class="btn btn-secondary">
+      Return to project
+    </a>
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stats-card">
+      <span class="stats-label">All Tasks</span>
+      <strong th:text="${stats.totalTasks}">0</strong>
+    </div>
+
+    <div class="stats-card">
+      <span class="stats-label">TODO</span>
+      <strong th:text="${stats.todoTasks}">0</strong>
+    </div>
+
+    <div class="stats-card">
+      <span class="stats-label">IN PROGRESS</span>
+      <strong th:text="${stats.inProgressTasks}">0</strong>
+    </div>
+
+    <div class="stats-card">
+      <span class="stats-label">DONE</span>
+      <strong th:text="${stats.doneTasks}">0</strong>
+    </div>
+
+  </div>
+
+  <div class="progress-section">
+    <h2>Project progress</h2>
+
+    <p>
+      Completed:
+      <strong th:text="${#numbers.formatDecimal(stats.completionPercent, 1, 2)} + '%'">0%</strong>
+    </p>
+
+    <div class="progress-bar">
+      <div class="progress-fill"
+           th:style="'width:' + ${stats.completionPercent} + '%'">
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-content">
+
+    <div class="chart-card">
+      <h2>Tasks by status</h2>
+      <div class="chart-wrapper">
+        <canvas id="statusChart"></canvas>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <h2>Deadline</h2>
+
+      <p>
+        <strong>Tasks after the deadline:</strong>
+        <span th:text="${stats.overdueTasks}">0</span>
+      </p>
+
+      <p>
+        <strong>Tasks without deadline:</strong>
+        <span th:text="${stats.tasksWithoutDeadline}">0</span>
+      </p>
+
+      <h2>Scheduled time</h2>
+
+      <p>
+        <strong>Average time:</strong>
+        <span th:text="${stats.averagePlannedHours} + ' h'">0 h</span>
+      </p>
+
+      <p>
+        <strong>Shortest time:</strong>
+        <span th:text="${stats.minPlannedHours} + ' h'">0 h</span>
+      </p>
+
+      <p>
+        <strong>Longest time:</strong>
+        <span th:text="${stats.maxPlannedHours} + ' h'">0 h</span>
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<script th:inline="javascript">
+  const todo = [[${stats.todoTasks}]];
+  const inProgress = [[${stats.inProgressTasks}]];
+  const done = [[${stats.doneTasks}]];
+
+  const ctx = document.getElementById('statusChart');
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['TODO', 'IN_PROGRESS', 'DONE'],
+      datasets: [{
+        data: [todo, inProgress, done]
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+</script>
+
+</body>
+</html>

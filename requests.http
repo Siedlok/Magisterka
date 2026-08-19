@@ -1,0 +1,30 @@
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Test3",
+  "description": "testowe zapytanie",
+  "status": "DONE"
+}
+###
+PUT http://localhost:8080/api/tasks/69d7d0ab2c9e73895195f03d
+Content-Type: application/json
+
+{
+  "title": "Test1",
+  "description": "testowe zapytanie2",
+  "status": "TODO"
+}
+###
+DELETE http://localhost:8080/api/tasks/69d577c5b7ec0aab693a8ba1
+###
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Test2",
+  "description": "testowe zapytanie123",
+  "status": "TODO"
+}
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add project</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+
+<h2>Add project</h2>
+<div class="user-info" th:if="${username != null}">
+  Logged as: <strong th:text="${username}">user</strong>
+</div>
+<div class="back-link-wrapper">
+  <a href="/projects" class="btn btn-secondary">Return to projects</a>
+</div>
+
+<div class="form-container">
+  <form th:action="@{/projects}" method="post" th:object="${project}">
+
+    <label>Project name:</label>
+    <input type="text" th:field="*{name}" required>
+
+    <button type="submit">Save project</button>
+
+  </form>
+</div>
+
+</body>
+</html>
